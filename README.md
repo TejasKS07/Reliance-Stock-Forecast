@@ -79,15 +79,15 @@ Since the ultimate objective is a profitable trading strategy rather than classi
 
 ## Trading Simulation (Test Set: 2021–2024)
 
-| Metric | RF (RandomizedSearchCV) | RF (Optuna) ★ | Stacking Ensemble |
-|--------|------------------------|---------------|-------------------|
-| Initial Capital | ₹10,00,000 | ₹10,00,000 | ₹10,00,000 |
-| Final Capital | ₹14,66,570 | **₹18,83,752** | TBD |
-| Total Return | +46.66% | **+88.38%** | TBD |
+| Metric | RF (RandomizedSearchCV) | RF (Optuna) ★ |
+|--------|------------------------|---------------|
+| Initial Capital | ₹10,00,000 | ₹10,00,000 |
+| Final Capital | ₹14,66,570 | **₹18,83,752** |
+| Total Return | +46.66% | **+88.38%** |
 | Sharpe Ratio | 0.6162 | **1.0949** | TBD |
-| Total Trades | 115 | 115 | TBD |
-| Long / Short | 70 / 45 | 72 / 43 | TBD |
-| Win Rate | 50.4% | **55.7%** | TBD |
+| Total Trades | 115 | 115 |
+| Long / Short | 70 / 45 | 72 / 43 |
+| Win Rate | 50.4% | **55.7%** |
 
 ★ = Final selected model
 
@@ -118,7 +118,7 @@ During the modeling and ensemble phases, several standard approaches were implem
 
 - **Meta-Learners (`RidgeClassifier` / `LogisticRegression`):** Standard stacking trains a secondary model on base predictions. Financial data is extremely noisy, making a secondary model prone to overfitting OOF predictions. Rejected in favor of **`scipy.optimize.minimize` (SLSQP)** for explicit, constrained weight optimization.
 
-- **Stacking Ensemble (final ensemble):** Despite comparable classification accuracy, its Long/Short imbalance (105/10) revealed directional bias. Random Forest's balanced signals (72/43) produced superior risk-adjusted returns.
+- **Scipy Ensemble (final ensemble):** Despite comparable classification accuracy, its Long/Short imbalance (105/10) revealed directional bias. Random Forest's balanced signals (72/43) produced superior risk-adjusted returns.
 
 ## Requirements
 
@@ -131,37 +131,20 @@ xgboost
 optuna
 scipy
 matplotlib
-python-docx
 ```
 
 Install with:
 ```bash
-pip install numpy pandas yfinance scikit-learn xgboost optuna scipy matplotlib python-docx
+pip install numpy pandas yfinance scikit-learn xgboost optuna scipy matplotlib
 ```
-
-## Usage
-
-```bash
-python load_reliance_data.py    # Logistic Regression baseline
-python random_forest.py         # Random Forest + Trading Simulation
-```
-
-For notebook-based workflows (Optuna tuning, XGBoost, Ensemble), open the respective `.ipynb` files in Jupyter/VS Code.
 
 ## Project Structure
 
 ```
-QC Task1/
-├── Log_Reg.ipynb                      # Logistic Regression notebook
-├── load_reliance_data.py              # Logistic Regression pipeline (script)
+Reliance-Stock-Forecast/
 ├── RandomF.ipynb                      # Random Forest baseline notebook
 ├── RandomF_Optuna.ipynb               # Random Forest + Optuna tuning (★ final model)
-├── random_forest.py                   # Random Forest pipeline (script)
 ├── XGBoost.ipynb                      # XGBoost + Optuna tuning notebook
 ├── Ensemble_Scipy.ipynb               # Stacking Ensemble with Scipy Optimization
-├── QC_Task1_Methodology_Report.docx   # Research methodology report
-├── generate_report.py                 # Script to generate the .docx report
-├── feature_importance.png             # RF feature importance chart
-├── xgboost_feature_importance.png     # XGBoost feature importance chart
 └── README.md
 ```
